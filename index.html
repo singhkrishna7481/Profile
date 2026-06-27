@@ -229,209 +229,135 @@
         <div class="section-header reveal">
           <span class="section-tag">What I Know</span>
           <h2 id="skills-title" class="section-title">Tech <span class="gradient-text">Stack</span></h2>
-          <p class="section-desc">A versatile skill set bridging backend engineering and modern frontend development.</p>
+          <p class="section-desc">Gently floating technology bubbles. Hover to interact, move cursor to shift, or filter by category.</p>
         </div>
 
         <!-- Skill Category Tabs -->
         <div class="skills-tabs reveal" role="tablist" aria-label="Skill categories">
-          <button class="skill-tab active" id="tab-backend" role="tab" aria-selected="true" aria-controls="panel-backend" data-tab="backend">Backend</button>
-          <button class="skill-tab" id="tab-frontend" role="tab" aria-selected="false" aria-controls="panel-frontend" data-tab="frontend">Frontend</button>
-          <button class="skill-tab" id="tab-tools" role="tab" aria-selected="false" aria-controls="panel-tools" data-tab="tools">Tools &amp; DB</button>
+          <button class="skill-tab active" data-filter="all">All Stack</button>
+          <button class="skill-tab" data-filter="backend">Backend</button>
+          <button class="skill-tab" data-filter="frontend">Frontend</button>
+          <button class="skill-tab" data-filter="tools">Tools &amp; DB</button>
         </div>
 
-        <!-- Backend -->
-        <div id="panel-backend" class="skills-panel active" role="tabpanel" aria-labelledby="tab-backend">
-          <div class="skills-grid">
-            <div class="skill-card reveal" data-skill="Java" data-level="90">
-              <div class="skill-icon" style="--skill-color: #f89820;">
-                <i class="devicon-java-plain colored" style="font-size: 28px;"></i>
-              </div>
-              <span class="skill-name">Java</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 90%"></div>
-              </div>
-            </div>
+        <!-- Dynamic Bubble Cluster Area -->
+        <div class="skills-bubble-container" id="skills-bubble-area">
+          <div class="skills-bg-particles" id="skills-bg-particles"></div>
 
-            <div class="skill-card reveal" data-skill="Spring Boot" data-level="80">
-              <div class="skill-icon" style="--skill-color: #6db33f;">
-                <i class="devicon-spring-plain colored" style="font-size: 28px;"></i>
-              </div>
-              <span class="skill-name">Spring Boot</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 80%"></div>
-              </div>
-            </div>
-
-            <div class="skill-card reveal" data-skill="Spring Security" data-level="75">
-              <div class="skill-icon" style="--skill-color: #6db33f;">
-                <i class="devicon-spring-plain colored" style="font-size: 28px; filter: hue-rotate(50deg);"></i>
-              </div>
-              <span class="skill-name">Spring Security</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 75%"></div>
-              </div>
-            </div>
-
-            <div class="skill-card reveal" data-skill="Spring Cloud Gateway" data-level="80">
-              <div class="skill-icon" style="--skill-color: #6db33f;">
-                <i class="devicon-spring-plain colored" style="font-size: 28px; filter: hue-rotate(100deg);"></i>
-              </div>
-              <span class="skill-name">Spring Cloud Gateway</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 80%"></div>
-              </div>
-            </div>
-
-            <div class="skill-card reveal" data-skill="Microservices" data-level="75">
-              <div class="skill-icon" style="--skill-color: #00d4ff;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M12 22a10 10 0 0 1-10-10"/><path d="M2 12a10 10 0 0 1 10-10"/><path d="M22 12a10 10 0 0 1-10 10"/></svg>
-              </div>
-              <span class="skill-name">Microservices</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 75%"></div>
-              </div>
-            </div>
-
-            <div class="skill-card reveal" data-skill="Thymeleaf" data-level="70">
-              <div class="skill-icon" style="--skill-color: #005f0f;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-              </div>
-              <span class="skill-name">Thymeleaf</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 70%"></div>
-              </div>
+          <!-- Backend Skills -->
+          <div class="skill-bubble backend" data-skill="Java" style="--skill-color: #f89820;">
+            <div class="bubble-inner">
+              <i class="devicon-java-plain colored" style="font-size: 24px;"></i>
+              <span class="bubble-name">Java</span>
             </div>
           </div>
-        </div>
-
-        <!-- Frontend -->
-        <div id="panel-frontend" class="skills-panel" role="tabpanel" aria-labelledby="tab-frontend" hidden>
-          <div class="skills-grid">
-            <div class="skill-card reveal" data-skill="HTML" data-level="90">
-              <div class="skill-icon" style="--skill-color: #e34f26;">
-                <i class="devicon-html5-plain colored" style="font-size: 28px;"></i>
-              </div>
-              <span class="skill-name">HTML5</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 90%"></div>
-              </div>
-            </div>
-
-            <div class="skill-card reveal" data-skill="CSS" data-level="75">
-              <div class="skill-icon" style="--skill-color: #1572b6;">
-                <i class="devicon-css3-plain colored" style="font-size: 28px;"></i>
-              </div>
-              <span class="skill-name">CSS3</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 75%"></div>
-              </div>
-            </div>
-
-            <div class="skill-card reveal" data-skill="JavaScript" data-level="65">
-              <div class="skill-icon" style="--skill-color: #f7df1e;">
-                <i class="devicon-javascript-plain colored" style="font-size: 28px;"></i>
-              </div>
-              <span class="skill-name">JavaScript</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 65%"></div>
-              </div>
-            </div>
-
-            <div class="skill-card reveal" data-skill="Angular" data-level="70">
-              <div class="skill-icon" style="--skill-color: #dd0031;">
-                <i class="devicon-angularjs-plain colored" style="font-size: 28px;"></i>
-              </div>
-              <span class="skill-name">Angular</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 70%"></div>
-              </div>
-            </div>
-
-            <div class="skill-card reveal" data-skill="React JS" data-level="65">
-              <div class="skill-icon" style="--skill-color: #61dafb;">
-                <i class="devicon-react-original colored" style="font-size: 28px;"></i>
-              </div>
-              <span class="skill-name">React JS</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 65%"></div>
-              </div>
-            </div>
-
-            <div class="skill-card reveal" data-skill="Bootstrap" data-level="80">
-              <div class="skill-icon" style="--skill-color: #7952b3;">
-                <i class="devicon-bootstrap-plain colored" style="font-size: 28px;"></i>
-              </div>
-              <span class="skill-name">Bootstrap</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 80%"></div>
-              </div>
+          <div class="skill-bubble backend" data-skill="Spring Boot" style="--skill-color: #6db33f;">
+            <div class="bubble-inner">
+              <i class="devicon-spring-plain colored" style="font-size: 24px;"></i>
+              <span class="bubble-name">Spring Boot</span>
             </div>
           </div>
-        </div>
-
-        <!-- Tools & DB -->
-        <div id="panel-tools" class="skills-panel" role="tabpanel" aria-labelledby="tab-tools" hidden>
-          <div class="skills-grid">
-            <div class="skill-card reveal" data-skill="MySQL" data-level="75">
-              <div class="skill-icon" style="--skill-color: #4479a1;">
-                <i class="devicon-mysql-plain colored" style="font-size: 28px;"></i>
-              </div>
-              <span class="skill-name">MySQL</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 75%"></div>
-              </div>
-            </div>
-
-            <div class="skill-card reveal" data-skill="PostgreSQL" data-level="70">
-              <div class="skill-icon" style="--skill-color: #336791;">
-                <i class="devicon-postgresql-plain colored" style="font-size: 28px;"></i>
-              </div>
-              <span class="skill-name">PostgreSQL</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 70%"></div>
-              </div>
-            </div>
-
-            <div class="skill-card reveal" data-skill="Redis" data-level="75">
-              <div class="skill-icon" style="--skill-color: #d82c20;">
-                <i class="devicon-redis-plain colored" style="font-size: 28px;"></i>
-              </div>
-              <span class="skill-name">Redis</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 75%"></div>
-              </div>
-            </div>
-
-            <div class="skill-card reveal" data-skill="Kafka" data-level="70">
-              <div class="skill-icon" style="--skill-color: #231f20;">
-                <i class="devicon-apachekafka-original colored" style="font-size: 28px;"></i>
-              </div>
-              <span class="skill-name">Apache Kafka</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 70%"></div>
-              </div>
-            </div>
-
-            <div class="skill-card reveal" data-skill="Elasticsearch" data-level="60">
-              <div class="skill-icon" style="--skill-color: #005571;">
-                <i class="devicon-elasticsearch-plain colored" style="font-size: 28px;"></i>
-              </div>
-              <span class="skill-name">Elasticsearch</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 60%"></div>
-              </div>
-            </div>
-
-            <div class="skill-card reveal" data-skill="Git" data-level="80">
-              <div class="skill-icon" style="--skill-color: #f05032;">
-                <i class="devicon-git-plain colored" style="font-size: 28px;"></i>
-              </div>
-              <span class="skill-name">Git &amp; GitHub</span>
-              <div class="skill-bar-wrap">
-                <div class="skill-bar" style="--target-width: 80%"></div>
-              </div>
+          <div class="skill-bubble backend" data-skill="Spring Security" style="--skill-color: #6db33f;">
+            <div class="bubble-inner">
+              <i class="devicon-spring-plain colored" style="font-size: 24px; filter: hue-rotate(50deg);"></i>
+              <span class="bubble-name">Spring Security</span>
             </div>
           </div>
+          <div class="skill-bubble backend" data-skill="Spring Cloud Gateway" style="--skill-color: #6db33f;">
+            <div class="bubble-inner">
+              <i class="devicon-spring-plain colored" style="font-size: 24px; filter: hue-rotate(100deg);"></i>
+              <span class="bubble-name">Spring Cloud</span>
+            </div>
+          </div>
+          <div class="skill-bubble backend" data-skill="Microservices" style="--skill-color: #00d4ff;">
+            <div class="bubble-inner">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #00d4ff;"><circle cx="12" cy="12" r="2"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M12 22a10 10 0 0 1-10-10"/><path d="M2 12a10 10 0 0 1 10-10"/><path d="M22 12a10 10 0 0 1-10 10"/></svg>
+              <span class="bubble-name">Microservices</span>
+            </div>
+          </div>
+          <div class="skill-bubble backend" data-skill="Thymeleaf" style="--skill-color: #005f0f;">
+            <div class="bubble-inner">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #005f0f;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <span class="bubble-name">Thymeleaf</span>
+            </div>
+          </div>
+
+          <!-- Frontend Skills -->
+          <div class="skill-bubble frontend" data-skill="HTML5" style="--skill-color: #e34f26;">
+            <div class="bubble-inner">
+              <i class="devicon-html5-plain colored" style="font-size: 24px;"></i>
+              <span class="bubble-name">HTML5</span>
+            </div>
+          </div>
+          <div class="skill-bubble frontend" data-skill="CSS3" style="--skill-color: #1572b6;">
+            <div class="bubble-inner">
+              <i class="devicon-css3-plain colored" style="font-size: 24px;"></i>
+              <span class="bubble-name">CSS3</span>
+            </div>
+          </div>
+          <div class="skill-bubble frontend" data-skill="JavaScript" style="--skill-color: #f7df1e;">
+            <div class="bubble-inner">
+              <i class="devicon-javascript-plain colored" style="font-size: 24px;"></i>
+              <span class="bubble-name">JavaScript</span>
+            </div>
+          </div>
+          <div class="skill-bubble frontend" data-skill="Angular" style="--skill-color: #dd0031;">
+            <div class="bubble-inner">
+              <i class="devicon-angularjs-plain colored" style="font-size: 24px;"></i>
+              <span class="bubble-name">Angular</span>
+            </div>
+          </div>
+          <div class="skill-bubble frontend" data-skill="React JS" style="--skill-color: #61dafb;">
+            <div class="bubble-inner">
+              <i class="devicon-react-original colored" style="font-size: 24px;"></i>
+              <span class="bubble-name">React JS</span>
+            </div>
+          </div>
+          <div class="skill-bubble frontend" data-skill="Bootstrap" style="--skill-color: #7952b3;">
+            <div class="bubble-inner">
+              <i class="devicon-bootstrap-plain colored" style="font-size: 24px;"></i>
+              <span class="bubble-name">Bootstrap</span>
+            </div>
+          </div>
+
+          <!-- Tools & DB Skills -->
+          <div class="skill-bubble tools" data-skill="MySQL" style="--skill-color: #4479a1;">
+            <div class="bubble-inner">
+              <i class="devicon-mysql-plain colored" style="font-size: 24px;"></i>
+              <span class="bubble-name">MySQL</span>
+            </div>
+          </div>
+          <div class="skill-bubble tools" data-skill="PostgreSQL" style="--skill-color: #336791;">
+            <div class="bubble-inner">
+              <i class="devicon-postgresql-plain colored" style="font-size: 24px;"></i>
+              <span class="bubble-name">PostgreSQL</span>
+            </div>
+          </div>
+          <div class="skill-bubble tools" data-skill="Redis" style="--skill-color: #d82c20;">
+            <div class="bubble-inner">
+              <i class="devicon-redis-plain colored" style="font-size: 24px;"></i>
+              <span class="bubble-name">Redis</span>
+            </div>
+          </div>
+          <div class="skill-bubble tools" data-skill="Apache Kafka" style="--skill-color: #231f20;">
+            <div class="bubble-inner">
+              <i class="devicon-apachekafka-original colored" style="font-size: 24px;"></i>
+              <span class="bubble-name">Kafka</span>
+            </div>
+          </div>
+          <div class="skill-bubble tools" data-skill="Elasticsearch" style="--skill-color: #005571;">
+            <div class="bubble-inner">
+              <i class="devicon-elasticsearch-plain colored" style="font-size: 24px;"></i>
+              <span class="bubble-name">Elastic</span>
+            </div>
+          </div>
+          <div class="skill-bubble tools" data-skill="Git" style="--skill-color: #f05032;">
+            <div class="bubble-inner">
+              <i class="devicon-git-plain colored" style="font-size: 24px;"></i>
+              <span class="bubble-name">Git &amp; GitHub</span>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>

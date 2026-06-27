@@ -247,27 +247,7 @@ function initScrollReveal() {
   elements.forEach(el => observer.observe(el));
 }
 
-/* ============================================================
-   6. SKILL BARS ANIMATION
-   ============================================================ */
-function initSkillBars() {
-  const skillCards = document.querySelectorAll('.skill-card');
-  if (!skillCards.length) return;
 
-  const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate');
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.3 }
-  );
-
-  skillCards.forEach(card => observer.observe(card));
-}
 
 /* ============================================================
    7. COUNTER ANIMATION (stats)
@@ -600,47 +580,218 @@ function initFooterYear() {
 }
 
 /* ============================================================
-   SKILLS TAB SWITCHING
+   INTERACTIVE SKILLS BUBBLE CLUSTER (60fps Physics & Mouse repulsion)
    ============================================================ */
-function initSkillsTabs() {
-  const tabs = document.querySelectorAll('.skill-tab');
-  const panels = document.querySelectorAll('.skills-panel');
-  if (!tabs.length) return;
+function initSkillsBubbleCluster() {
+  const container = document.getElementById('skills-bubble-area');
+  const bubbleEls = document.querySelectorAll('.skill-bubble');
+  if (!container || !bubbleEls.length) return;
 
+  let mouse = { x: -1000, y: -1000 };
+  let isMouseIn = false;
+  let activeFilter = 'all';
+
+  // Parse bubbles into tracking objects
+  const bubbles = Array.from(bubbleEls).map((el) => {
+    let category = 'backend';
+    if (el.classList.contains('frontend')) category = 'frontend';
+    if (el.classList.contains('tools')) category = 'tools';
+
+    return {
+      element: el,
+      category: category,
+      // Current animated offset coordinates (relative to natural position)
+      x: 0,
+      y: 0,
+      // Cached static page coordinates (for mouse repulsion calculations)
+      centerX: 0,
+      centerY: 0,
+      // Floating angle offsets and range
+      floatAngleX: Math.random() * Math.PI * 2,
+      floatAngleY: Math.random() * Math.PI * 2,
+      floatSpeedX: 0.005 + Math.random() * 0.006,
+      floatSpeedY: 0.005 + Math.random() * 0.006,
+      floatRangeX: 6 + Math.random() * 6, // 6px - 12px swing range
+      floatRangeY: 6 + Math.random() * 6
+    };
+  });
+
+  // Cache static center coordinates relative to container to avoid layout thrashing
+  function cachePositions() {
+    const containerRect = container.getBoundingClientRect();
+    bubbles.forEach(b => {
+      // Temporarily clear transforms to read base layout coordinates
+      b.element.style.transform = 'none';
+      const rect = b.element.getBoundingClientRect();
+      b.centerX = rect.left - containerRect.left + rect.width / 2;
+      b.centerY = rect.top - containerRect.top + rect.height / 2;
+    });
+  }
+
+  // Cache positions once layout settles and on window resizing
+  setTimeout(cachePositions, 300);
+  window.addEventListener('resize', () => {
+    cachePositions();
+  });
+
+  // Track cursor coordinates
+  container.addEventListener('mousemove', (e) => {
+    const rect = container.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+    isMouseIn = true;
+  });
+
+  container.addEventListener('mouseleave', () => {
+    mouse.x = -1000;
+    mouse.y = -1000;
+    isMouseIn = false;
+  });
+
+  // Track mobile touch interaction
+  container.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      const rect = container.getBoundingClientRect();
+      mouse.x = e.touches[0].clientX - rect.left;
+      mouse.y = e.touches[0].clientY - rect.top;
+      isMouseIn = true;
+    }
+  }, { passive: true });
+
+  container.addEventListener('touchend', () => {
+    mouse.x = -1000;
+    mouse.y = -1000;
+    isMouseIn = false;
+  });
+
+  // Tab Filtering handler
+  const tabs = document.querySelectorAll('.skill-tab');
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      const target = tab.getAttribute('data-tab');
-
-      tabs.forEach(t => {
-        t.classList.remove('active');
-        t.setAttribute('aria-selected', 'false');
-      });
+      tabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      tab.setAttribute('aria-selected', 'true');
+      activeFilter = tab.getAttribute('data-filter') || 'all';
 
-      panels.forEach(panel => {
-        const isTarget = panel.id === `panel-${target}`;
-        panel.classList.toggle('active', isTarget);
-        panel.hidden = !isTarget;
-
-        if (isTarget) {
-          // Animate skill bars in newly-shown panel
-          panel.querySelectorAll('.skill-card').forEach(card => {
-            card.classList.remove('animate');
-            void card.offsetWidth;
-            setTimeout(() => card.classList.add('animate'), 50);
-          });
-
-          // Re-run reveal on newly-shown cards
-          panel.querySelectorAll('.reveal').forEach(el => {
-            el.classList.remove('visible');
-            void el.offsetWidth;
-            setTimeout(() => el.classList.add('visible'), 50);
-          });
+      bubbles.forEach(b => {
+        if (activeFilter === 'all') {
+          b.element.classList.remove('dimmed', 'highlighted');
+        } else if (b.category === activeFilter) {
+          b.element.classList.remove('dimmed');
+          b.element.classList.add('highlighted');
+        } else {
+          b.element.classList.remove('highlighted');
+          b.element.classList.add('dimmed');
         }
       });
+      // Recalculate layout base centers in case container resized
+      setTimeout(cachePositions, 50);
     });
   });
+
+  // Background particle systems
+  const particlesWrap = document.getElementById('skills-bg-particles');
+  const bgParticles = [];
+  if (particlesWrap) {
+    const numParticles = window.innerWidth < 768 ? 10 : 20;
+    for (let i = 0; i < numParticles; i++) {
+      const pEl = document.createElement('div');
+      pEl.className = 'bg-particle';
+      const size = 30 + Math.random() * 60;
+      pEl.style.width = size + 'px';
+      pEl.style.height = size + 'px';
+      
+      const px = Math.random() * (container.clientWidth || 500);
+      const py = Math.random() * (container.clientHeight || 400);
+      particlesWrap.appendChild(pEl);
+      
+      bgParticles.push({
+        element: pEl,
+        x: px,
+        y: py,
+        vx: (Math.random() - 0.5) * 0.12,
+        vy: (Math.random() - 0.5) * 0.12,
+        size: size
+      });
+    }
+  }
+
+  // Animation Frame Loop
+  let animId = null;
+  let isLooping = false;
+  const isMobile = window.innerWidth < 768;
+  const mouseThreshold = isMobile ? 80 : 150;
+
+  function update() {
+    if (!isLooping) return;
+
+    const width = container.clientWidth || 500;
+    const height = container.clientHeight || 400;
+
+    // Update ambient background particles
+    bgParticles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x < -p.size) p.x = width + p.size;
+      if (p.x > width + p.size) p.x = -p.size;
+      if (p.y < -p.size) p.y = height + p.size;
+      if (p.y > height + p.size) p.y = -p.size;
+
+      p.element.style.transform = `translate3d(${p.x}px, ${p.y}px, 0)`;
+    });
+
+    // Update floating bubbles
+    bubbles.forEach(b => {
+      // 1. Organic swing drift (trigonometric movement)
+      b.floatAngleX += b.floatSpeedX;
+      b.floatAngleY += b.floatSpeedY;
+      const floatX = Math.sin(b.floatAngleX) * b.floatRangeX;
+      const floatY = Math.cos(b.floatAngleY) * b.floatRangeY;
+
+      // 2. Mouse Repulsion offsets
+      let repelX = 0;
+      let repelY = 0;
+      if (isMouseIn) {
+        const dx = b.centerX - mouse.x;
+        const dy = b.centerY - mouse.y;
+        const dist = Math.hypot(dx, dy);
+        
+        if (dist < mouseThreshold) {
+          const force = (mouseThreshold - dist) / mouseThreshold;
+          const angle = Math.atan2(dy, dx);
+          // Push away up to 35px
+          repelX = Math.cos(angle) * force * 35;
+          repelY = Math.sin(angle) * force * 35;
+        }
+      }
+
+      // 3. Smooth transition to target coordinate (lerp offset value)
+      b.x += (floatX + repelX - b.x) * 0.08;
+      b.y += (floatY + repelY - b.y) * 0.08;
+
+      // 4. Transform output (scale down dimmed category bubbles)
+      const scale = (activeFilter !== 'all' && b.category !== activeFilter) ? 0.88 : 1.0;
+      b.element.style.transform = `translate3d(${b.x.toFixed(2)}px, ${b.y.toFixed(2)}px, 0) scale(${scale})`;
+    });
+
+    animId = requestAnimationFrame(update);
+  }
+
+  // Intersection observer to only loop when visible
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        isLooping = true;
+        cachePositions();
+        update();
+      } else {
+        isLooping = false;
+        if (animId) cancelAnimationFrame(animId);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  revealObserver.observe(container);
 }
 
 /* ============================================================
@@ -724,7 +875,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   initTypingAnimation();
   initScrollReveal();
-  initSkillBars();
   initCounters();
   initProjectFilter();
   initCardTilt();
@@ -732,7 +882,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initContactForm();
   initScrollTop();
   initFooterYear();
-  initSkillsTabs();
+  initSkillsBubbleCluster();
   initParallax();
   initRipple();
   initLinkedInExpanders();

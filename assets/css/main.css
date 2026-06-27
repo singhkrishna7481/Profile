@@ -1014,13 +1014,14 @@ h1, h2, h3, h4, h5, h6 {
    ============================================================ */
 .skills {
   background: var(--bg-primary);
+  position: relative;
 }
 
 .skills-tabs {
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin-bottom: 48px;
+  margin-bottom: 32px;
   background: var(--bg-card);
   padding: 6px;
   border-radius: 50px;
@@ -1039,6 +1040,8 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-muted);
   transition: var(--transition);
   cursor: pointer;
+  background: none;
+  border: none;
 }
 
 .skill-tab:hover { color: var(--text-primary); }
@@ -1049,95 +1052,136 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 4px 16px rgba(0, 212, 255, 0.3);
 }
 
-.skills-panel {
-  display: none;
-}
-
-.skills-panel.active {
-  display: block;
-}
-
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-.skill-card {
+/* Skills Bubble Cluster Container */
+.skills-bubble-container {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  display: grid;
-  grid-template-areas:
-    "icon name percent"
-    "bar  bar   bar";
-  grid-template-columns: auto 1fr auto;
-  gap: 8px 14px;
-  align-items: center;
-  transition: var(--transition);
-  cursor: default;
-}
-
-.skill-card:hover {
-  border-color: rgba(var(--skill-color-rgb, 0, 212, 255), 0.4);
-  background: var(--bg-card-hover);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md), 0 0 30px rgba(var(--skill-color-rgb, 0, 212, 255), 0.1);
-}
-
-.skill-icon {
-  grid-area: icon;
-  width: 42px;
-  height: 42px;
-  border-radius: var(--radius-sm);
-  background: color-mix(in srgb, var(--skill-color) 12%, transparent);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  padding: 40px 30px;
+  transition: min-height 0.4s ease, border-color var(--transition);
+}
+
+/* Active State (JavaScript-driven physics) */
+.skills-bubble-container.interactive-bubbles {
+  min-height: 520px;
+  display: block; /* absolute bubble layouts */
+  padding: 0;
+}
+
+/* Ambient Particles */
+.skills-bg-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bg-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 212, 255, 0.03);
+  pointer-events: none;
+  filter: blur(2px);
+  will-change: transform;
+}
+
+/* Base Bubble Style */
+.skill-bubble {
+  position: relative;
+  z-index: 2;
+  padding: 12px 20px;
+  background: rgba(29, 34, 38, 0.5); /* glassmorphism */
+  border: 1px solid var(--border-color);
+  border-radius: 50px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--skill-color);
-  transition: var(--transition);
-}
-
-.skill-card:hover .skill-icon {
-  background: color-mix(in srgb, var(--skill-color) 20%, transparent);
-  transform: scale(1.1);
-}
-
-.skill-name {
-  grid-area: name;
+  color: var(--text-primary);
   font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 0.9rem;
+  user-select: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              border-color 0.3s ease, 
+              box-shadow 0.3s ease, 
+              opacity 0.4s ease,
+              filter 0.4s ease;
+}
+
+/* Custom visual styling when theme is light */
+[data-theme="light"] .skill-bubble {
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Active State positioning (JS updates position via absolute coordinates) */
+.skills-bubble-container.interactive-bubbles .skill-bubble {
+  position: absolute;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* Bubble Inner */
+.bubble-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.bubble-inner svg {
+  flex-shrink: 0;
+}
+
+.bubble-name {
+  font-size: 0.88rem;
   font-weight: 600;
-  font-size: 0.95rem;
   color: var(--text-primary);
 }
 
-.skill-percent {
-  grid-area: percent;
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  color: var(--accent-cyan);
-  font-weight: 500;
+/* Glow / Hover effect */
+.skill-bubble:hover {
+  transform: scale(1.22) !important;
+  z-index: 100 !important;
+  border-color: var(--skill-color) !important;
+  background: rgba(29, 34, 38, 0.8) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 
+              0 0 20px color-mix(in srgb, var(--skill-color) 45%, transparent) !important;
 }
 
-.skill-bar-wrap {
-  grid-area: bar;
-  height: 4px;
-  background: var(--border-color);
-  border-radius: 4px;
-  overflow: hidden;
+[data-theme="light"] .skill-bubble:hover {
+  background: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 
+              0 0 20px color-mix(in srgb, var(--skill-color) 35%, transparent) !important;
 }
 
-.skill-bar {
-  height: 100%;
-  width: 0%;
-  background: var(--gradient-main);
-  border-radius: 4px;
-  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+/* Filtering classes */
+.skill-bubble.dimmed {
+  opacity: 0.18;
+  filter: blur(1px) grayscale(0.6);
+  pointer-events: none;
 }
 
-.skill-card.animate .skill-bar {
-  width: var(--target-width);
+.skill-bubble.highlighted {
+  opacity: 1;
+  filter: none;
+  border-color: var(--skill-color);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--skill-color) 20%, transparent);
 }
 
 /* ============================================================
