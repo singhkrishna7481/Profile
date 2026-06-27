@@ -867,6 +867,48 @@ function initLinkedInExpanders() {
 }
 
 /* ============================================================
+   HERO INTERACTIVE EFFECTS (Cursor Spotlight & Parallax Glow)
+   ============================================================ */
+function initHeroEffects() {
+  const hero = document.querySelector('.hero');
+  const glow = document.querySelector('.hero-image-backdrop-glow');
+  const imageWrap = document.querySelector('.hero-image-wrap');
+  if (!hero) return;
+
+  // Track cursor position inside hero section
+  hero.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    
+    // 1. Update css variables for radial cursor spotlight
+    hero.style.setProperty('--mouse-x', `${mx}px`);
+    hero.style.setProperty('--mouse-y', `${my}px`);
+
+    // 2. Parallax glow effect (subtle movement of glow spotlight behind image wrap)
+    if (glow && imageWrap) {
+      const iwRect = imageWrap.getBoundingClientRect();
+      const iwCenterX = iwRect.left + iwRect.width / 2;
+      const iwCenterY = iwRect.top + iwRect.height / 2;
+      
+      const dx = (e.clientX - iwCenterX) / (window.innerWidth / 2); // normalized (-1 to 1)
+      const dy = (e.clientY - iwCenterY) / (window.innerHeight / 2);
+      
+      glow.style.transform = `translate3d(${dx * 25}px, ${dy * 25}px, 0) scale(1.06)`;
+    }
+  });
+
+  hero.addEventListener('mouseleave', () => {
+    // Reset positions on exit
+    hero.style.setProperty('--mouse-x', `-1000px`);
+    hero.style.setProperty('--mouse-y', `-1000px`);
+    if (glow) {
+      glow.style.transform = 'translate3d(0, 0, 0) scale(1)';
+    }
+  });
+}
+
+/* ============================================================
    INIT ALL
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
@@ -886,4 +928,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initParallax();
   initRipple();
   initLinkedInExpanders();
+  initHeroEffects();
 });

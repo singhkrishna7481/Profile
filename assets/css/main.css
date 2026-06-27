@@ -572,6 +572,9 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0 auto;
   gap: 48px;
   contain: layout; /* prevent layout recalc from children affecting outside */
+  background-image: radial-gradient(800px circle at var(--mouse-x, -1000px) var(--mouse-y, -1000px), 
+                    rgba(0, 212, 255, 0.045) 0%, 
+                    transparent 65%);
 }
 
 /* Background — position:absolute (not fixed) prevents full-page repaints on scroll */
@@ -743,24 +746,41 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: var(--nav-height);
 }
 
+.hero-image-backdrop-glow {
+  position: absolute;
+  inset: -15px;
+  background: radial-gradient(circle, var(--accent-cyan) 0%, var(--accent-purple) 70%);
+  opacity: 0.25;
+  filter: blur(40px);
+  z-index: 0;
+  border-radius: 30px;
+  pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  will-change: transform, opacity;
+}
+
+.hero-image-wrap:hover .hero-image-backdrop-glow {
+  opacity: 0.45;
+  transform: scale(1.08);
+}
+
 .hero-image-ring {
   position: absolute;
   inset: -3px;
   border-radius: 24px;
   background: var(--gradient-main);
   opacity: 0.45;
-  z-index: 0;
-  /* No animation on ring — saves a compositing layer */
+  z-index: 1;
 }
 
 .hero-image {
   width: 100%;
   aspect-ratio: 4/5;
   object-fit: cover;
-  object-position: center top;
+  object-position: center;
   border-radius: 20px;
   position: relative;
-  z-index: 1;
+  z-index: 2;
   border: 2px solid var(--border-color);
   box-shadow: var(--shadow-lg), var(--shadow-cyan);
   transition: transform 0.4s ease;
@@ -771,6 +791,8 @@ h1, h2, h3, h4, h5, h6 {
   transform: scale(1.02);
   box-shadow: var(--shadow-lg), var(--shadow-glow);
 }
+
+
 
 .hero-image-badge {
   position: absolute;
